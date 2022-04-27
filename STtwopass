@@ -1,0 +1,81 @@
+// gcc STtwopass.c
+// a.exe
+#include <stdio.h>
+#include <string.h>
+
+struct symboltable
+{
+  char symb;
+  int mt;
+};
+
+int main()
+{
+  FILE *f1;
+  int i, j;
+  char input[8][11];
+  char temp[11];
+  int numchar = '0';
+  struct symboltable sb[5];
+  int sbptr = 0;
+  f1 = fopen("code.txt", "r");
+  int z = 0;
+  while (fgets(input[z], 12, f1))
+  {
+    z++;
+  }
+  int counter = 0;
+  if (strstr(input[0], "START"))
+  {
+    int k = 6;
+    while (input[0][k])
+    {
+      if (isdigit(input[0][k]))
+      {
+        counter = counter * 10 + input[0][k] - numchar;
+      }
+      k++;
+    }
+  }
+  for (i = 0; i < 8; i++)
+  {
+    counter++;
+    strcpy(temp, input[i]);
+    if (strstr(temp, "DB"))
+    {
+      int k = 3;
+      char str[] = "";
+      while (temp[k] != ' ')
+      {      
+        sb[sbptr].symb = temp[k];
+        sb[sbptr].mt = counter;
+        sbptr++;
+        k++;
+      }
+    }
+  }
+  printf("---------SYMBOL TABLE---------");
+  printf("\n");
+  for (i = 0; i < sbptr; i++)
+  {
+    printf("-----------------------------------");
+    printf("\n");
+    printf("%c \t", sb[i].symb);
+    printf("        |        ");
+    printf("%d", sb[i].mt);
+    printf("\n");
+    printf("-----------------------------------");
+    printf("\n");
+  }
+  return 0;
+}
+
+//input 
+START 2000
+MOVE ARG X
+MOVE BRG Y
+ADD ARG Y
+MUL BRG X
+DB X 05H
+DB Y 05Z
+END
