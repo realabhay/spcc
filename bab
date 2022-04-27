@@ -1,0 +1,23 @@
+//flex containingbab.l
+//gcc lex.yy.c
+// a.exe
+%{
+  #include<stdio.h>  
+%}
+%%
+^.*bab.*$ {printf("%s\n",yytext);}
+.|\n
+%%
+main(){
+  yyin = fopen("containingbab.txt","r");
+  yylex();
+}
+int yywrap(){
+  return 1;
+}
+
+// input
+ababa
+sdas
+jwjbabad
+adsv
