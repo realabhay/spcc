@@ -1,0 +1,74 @@
+// remove comments before compiling and make 2 different files.
+// arithmetic.l starts here
+// flex arithmetic.l
+
+%{
+#include "y.tab.h"
+%}
+
+%%
+
+[0-9]+		{yylval.num=atoi(yytext); return number;}
+[-+*/]		{return yytext[0];}
+COS|cos		{return cos1; }
+SIN|sin		{return sin1; }
+TAN|tan		{return tan1; }
+
+%%
+
+int main(){
+yyparse();
+return 0;
+}
+
+int yywrap(){
+return 1;
+}
+
+int yyerror(){
+exit(0);
+}
+
+// arithmetic.y starts from here
+// bison -dy arithmetic.y
+// gcc lex.yy.c y.tab.c
+// a.exe
+
+ %{
+#include<stdio.h>
+#include<math.h>
+%}
+
+%union {float num;}
+%start line
+%token cos1
+%token sin1
+%token tan1
+%token <num> number
+%type <num> exp
+
+%%
+
+line	: exp
+	| line exp
+	;
+
+exp : number	{$$=$1;}
+    | exp '+' number	{$$=$1+$3;printf("\n%f+%f=%f\n",$1,$3,$$);}
+    | exp '-' number	{$$=$1-$3;printf("\n%f-%f=%f\n",$1,$3,$$);}
+    | exp '*' number	{$$=$1*$3;printf("\n%f*%f=%f\n",$1,$3,$$);}
+    | exp '/' number	{$$=$1/$3;printf("\n%f/%f=%f\n",$1,$3,$$);}
+    | cos1 number	{printf("%f\n", cos(($2/180)*3.14));}
+    | sin1 number	{printf("%f\n", sin(($2/180)*3.14));}
+    | tan1 number	{printf("%f\n", tan(($2/180)*3.14));}
+    ;
+
+%%
+
+int main(){
+yyparse();
+return 0;
+}
+int yyerror(){
+//exit(0);
+}
