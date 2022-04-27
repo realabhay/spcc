@@ -1,0 +1,47 @@
+%{
+    
+    int line=0;
+    int tab=0;
+    int spaces=0;
+    int numbers = 0;
+    int character=0;
+    int word=0;
+    int sentences=0;
+
+    /*Write a program to recognize valid 
+    arithmetic expression that uses operators 
+    + , -,* and / and design calculator using YACC
+    */
+
+%}
+%%
+\n {line++;}
+\t {tab++;}
+[' '] {spaces++;}
+[A-Za-z,;'\"\\s]+[.?!]$ {sentences++;}
+[0-9] {numbers++;}
+[a-zA-Z0-9]+ {word++; character+=yyleng;}
+[a-zA-Z] {character++;}
+
+%%
+int main()
+{
+    yyin = fopen("count.txt","r");
+    yylex();
+    printf("\n Lines=%d",line );
+    printf("\n Tabs=%d",tab );
+    printf("\n Spaces=%d",spaces );
+    printf("\n Number=%d",numbers );
+    printf("\n Character=%d",character );
+    printf("\n Word=%d",word );
+    printf("\n Sentence=%d",sentences );
+
+}
+int yywrap(){
+    return 1;
+}
+
+// input
+This 2 is my a 1 lex program
+Cheers It works.
+hello	
