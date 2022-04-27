@@ -1,0 +1,89 @@
+// gcc LTtwopass.c
+// a.exe
+#include<stdio.h>
+#include<string.h>
+
+struct literal_table {
+  char lt[5];
+  int add;
+};
+
+int main(){
+  FILE* f1;
+  int i,j,k;
+  char inputarr[10][15];
+  char holdarr[15];
+  struct literal_table lt[5];
+  int litrpt;
+  int counter = 0;
+  f1 = fopen("code.txt","r");
+  k = 0;
+  char* p;
+  while (fgets(inputarr[k], 16, f1))
+  {
+    k++; 
+  }
+  // find start counter posistion
+  p = strstr(inputarr[0], "START");
+  if(p){
+    for (i = 6; i < 15; i++)
+    { 
+      if(isdigit(inputarr[0][i])){
+        counter =  counter*10 + inputarr[0][i] - '0';
+      }
+    }
+  }
+  // loop through all code
+  for (i = 0; i < 8; i++)
+  {
+    counter++;
+    strcpy(holdarr, inputarr[i]);
+    // if something found with "=X" add to lt
+    p = strstr(holdarr, "=");
+    if(p){
+      strcpy(lt[litrpt++].lt, p);
+    }
+    p = strstr(holdarr, "LTORG");
+    // if ltorg found then add address
+    if(p){
+      k = 0;
+      while (k < litrpt)
+      {
+        lt[k].add = counter;
+        counter++;
+        k++;
+      }
+      
+    }
+  }
+  
+  //print lt
+  printf("--------LITERAL TABLE--------");
+  printf("\n");
+  for ( i = 0; i < litrpt; i++)
+  {
+    printf("------------------------");
+    printf("\n");
+    printf("%s\t",lt[i].lt);
+    printf("   |   ");
+    printf("%d",lt[i].add);
+    printf("\n");
+    printf("------------------------");
+    printf("\n");
+
+  }
+  
+
+  return 0;
+};
+
+// input 
+START 200
+MOVE ARG ="4"
+MOVE BRG ="3"
+ADD ARG Y
+MUL BRG X
+LTORG
+DB X 05H
+DB Y 05Z
+END
