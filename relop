@@ -1,0 +1,25 @@
+// flex relationaloperators.l
+// gcc lex.yy.c
+// a.exe
+
+%{
+  #include<stdio.h>  
+%}
+%%
+(<=|>=|==|!=) {printf("%s\n",yytext);}
+.|\n
+%%
+main(){
+  yyin = fopen("relationaloperators.txt","r");
+  yylex();
+}
+int yywrap(){
+  return 1;
+}
+
+// input 
++
+>=
+<=
+==
++?
