@@ -1,3 +1,7 @@
+// flex count.l
+// gcc lex.yy.c
+// a.exe
+
 %{
     
     int line=0;
