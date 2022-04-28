@@ -2,9 +2,9 @@
 identifier
 ab
 bab
-ro
+relop
 count
-calculator
+calci
 STtwopass
 LTtwopass
 ICtwopass
