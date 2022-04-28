@@ -1,7 +1,25 @@
-import re
-s = input("enter the string:")
-pattern = r'^[a-zA-Z_]\w*$'
-if(re.search(pattern,s)):
- print("\n valid identifier")
-else:
- print("\n invalid identifier")
+// flex identifier.l
+// gcc lex.yy.c
+// a.exe
+%{
+//  declaration
+  #include <stdio.h>
+%}
+%%
+([a-zA-Z])+|[a-zA-Z0-9]* {printf("Valid Identifier %s\n", yytext);} 
+^[0-9]+ {printf("Invalid Identifier %s\n", yytext);} 
+.|\n;
+%%
+main(){
+  yyin = fopen("identifier.txt", "r");
+  yylex();
+}
+int yywrap(){
+    return 1;
+}
+
+// inout 
+gfg
+123
+abc12
+#abc
